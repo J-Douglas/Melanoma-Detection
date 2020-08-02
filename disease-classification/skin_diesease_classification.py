@@ -23,3 +23,29 @@ model.add(MaxPooling2D((2, 2)))
 model.add(Flatten())
 model.add(Dense(6, activation='softmax'))
 
+model.compile(
+  optimizer='adam', 
+  loss='categorical_crossentropy', 
+  metrics=['accuracy']
+)
+
+model.summary()
+
+epoch_count = 20
+batch_count = 120
+
+model.fit(
+	train_img,
+	train_labels,
+	epochs=epoch_count,
+	batch_size=batch_count
+	)
+
+# Saving the model
+model.save_weights('skin_disease_classification.h5'.format(epoch_count))
+
+test_pred = pd.DataFrame(model.predict(test_img, batch_size=batch_count))
+test_pred = pd.DataFrame(test_pred.idxmax(axis = 1))
+test_pred.index.name = 'ImageId'
+test_pred = test_pred.rename(columns = {0: 'Label'}).reset_index()
+test_pred['ImageId'] = test_pred['ImageId'] + 1
