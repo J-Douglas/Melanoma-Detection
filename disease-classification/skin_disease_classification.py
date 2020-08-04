@@ -10,6 +10,8 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 ### Data cleaning and organization
 df = pd.read_csv('../datasets/HAM/HAM10000_metadata.csv')
 
+base_dir = '../datasets/HAM/HAM10016_images/'
+
 for elm in df['dx']:
 	if
 
