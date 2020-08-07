@@ -10,6 +10,11 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 ### Data cleaning and organization
 df = pd.read_csv('../datasets/HAM/HAM10000_metadata.csv')
 
+def append_ext(fn):
+    return fn+".jpg"
+
+df['image_id'] = df['image_id'].apply(append_ext)
+
 base_dir = '../datasets/HAM/HAM10016_images/'
 
 # for img in df[]:
@@ -34,7 +39,7 @@ model.compile(
 
 model.summary()
 
-epoch_count = 20
+epoch_count = 4
 batch_size = 120
 
 ### Image Generators (train and testing data)
@@ -82,8 +87,8 @@ test_generator = test_datagen.flow_from_dataframe(
 #         class_mode='categorical')
 
 model.fit(
-	train_generator, 
-    steps_per_epoch=int(df.shape[0]/batch_size),  
+	  train_generator, 
+    steps_per_epoch=int(split/batch_size),  
     epochs=epoch_count,
     verbose=1)
 
