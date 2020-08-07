@@ -12,8 +12,8 @@ df = pd.read_csv('../datasets/HAM/HAM10000_metadata.csv')
 
 base_dir = '../datasets/HAM/HAM10016_images/'
 
-for elm in df['dx']:
-	if
+# for img in df[]:
+# 	if elm :
 
 
 model = Sequential()
@@ -35,30 +35,56 @@ model.compile(
 model.summary()
 
 epoch_count = 20
-batch_count = 120
+batch_size = 120
 
 ### Image Generators (train and testing data)
 train_datagen = ImageDataGenerator(rescale=1/255)
 test_datagen = ImageDataGenerator(rescale=1/255)
 
-train_generator = train_datagen.flow_from_directory(
-		'../datasets/train',
-        target_size=(600, 450), 
-        batch_size=batch_size,
-        classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
-        class_mode='categorical')
+split = int(df.shape[0]*0.8)
 
-test_generator = test_datagen.flow_from_directory(
-		'../datasets/test',
-        target_size=(600, 450), 
-        batch_size=batch_size,
-        classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
-        class_mode='categorical')
+train_generator = train_datagen.flow_from_dataframe(
+    dataframe=df[:split],
+    directory=base_dir,
+    x_col='image_id',
+    y_col='dx',
+    #batch_size=1848,
+    shuffle=False,
+    class_mode="categorical",
+    classes=['akiec','bcc','bkl','df','mel','nv','vasc'],
+    target_size=(600,450)
+)
+
+test_generator = test_datagen.flow_from_dataframe(
+    dataframe=df[split:],
+    directory=base_dir,
+    x_col='image_id',
+    y_col='dx',
+    #batch_size=1848,
+    shuffle=False,
+    class_mode="categorical",
+    classes=['akiec','bcc','bkl','df','mel','nv','vasc'],
+    target_size=(600,450)
+)
+
+# train_generator = train_datagen.flow_from_directory(
+# 		'../datasets/train',
+#         target_size=(600, 450), 
+#         batch_size=batch_size,
+#         classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
+#         class_mode='categorical')
+
+# test_generator = test_datagen.flow_from_directory(
+# 		'../datasets/test',
+#         target_size=(600, 450), 
+#         batch_size=batch_size,
+#         classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
+#         class_mode='categorical')
 
 model.fit(
 	train_generator, 
-    steps_per_epoch=int(total_sample/batch_size),  
-    epochs=epochs,
+    steps_per_epoch=int(df.shape[0]/batch_size),  
+    epochs=epoch_count,
     verbose=1)
 
 # Saving the model
