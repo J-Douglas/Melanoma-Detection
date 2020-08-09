@@ -27,6 +27,8 @@ model.add(MaxPooling2D((2, 2)))
 model.add(Conv2D(64, (5, 5), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 model.add(Conv2D(128, (3, 3), activation='relu'))
+model.add(Conv2D(256, (3, 3), activation='relu'))
+model.add(Conv2D(512, (3, 3), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 model.add(Flatten())
 model.add(Dense(7, activation='softmax'))
@@ -54,7 +56,7 @@ train_generator = train_datagen.flow_from_dataframe(
     x_col='image_id',
     y_col='dx',
     #batch_size=1848,
-    shuffle=False,
+    shuffle=True,
     class_mode="categorical",
     classes=['akiec','bcc','bkl','df','mel','nv','vasc'],
     target_size=(600,450)
@@ -66,7 +68,7 @@ test_generator = test_datagen.flow_from_dataframe(
     x_col='image_id',
     y_col='dx',
     #batch_size=1848,
-    shuffle=False,
+    shuffle=True,
     class_mode="categorical",
     classes=['akiec','bcc','bkl','df','mel','nv','vasc'],
     target_size=(600,450)
