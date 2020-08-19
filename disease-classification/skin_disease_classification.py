@@ -47,14 +47,15 @@ df['image_id'] = df['image_id'].apply(append_ext)
 #     os.rename(base_dir + elm,'../datasets/HAM/' + disease_class + '/' + elm)
 
 model = Sequential()
-model.add(Conv2D(8,(7, 7), activation='relu', input_shape=(600,450,3)))
+model.add(Conv2D(8,(11, 11), activation='relu', input_shape=(600,450,3)))
 model.add(MaxPooling2D((2, 2)))
 model.add(Conv2D(16,(7, 7), activation='relu'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(16, (5, 5), activation='relu'))
+model.add(Conv2D(16,(7, 7), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 model.add(Conv2D(32, (5, 5), activation='relu'))
+model.add(Conv2D(32, (5, 5), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(16, (5, 5), activation='relu'))
 model.add(Conv2D(16, (3, 3), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 model.add(Conv2D(8, (3, 3), activation='relu'))
@@ -70,7 +71,7 @@ model.compile(
 
 model.summary()
 
-epoch_count = 4
+epoch_count = 8
 batch_size = 16
 
 ### Image Generators (train and testing data)
@@ -143,16 +144,12 @@ test_generator = test_datagen.flow_from_directory(
         classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
         class_mode='categorical')
 
-print("Got HERE")
-
 model.fit_generator(
 	train_generator,
-    steps_per_epoch=10,
+    steps_per_epoch=20,
     epochs=epoch_count,
     verbose=1,  
     validation_data=validation_generator,)
-
-print("HERE yet?")
 
 # Saving the model
 model.save_weights('classify_v2.h5'.format(epoch_count))
