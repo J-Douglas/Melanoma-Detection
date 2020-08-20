@@ -1,1 +1,1 @@
-# Melenoma-Detection
+# Skin Lesion Analysis with Machine Learning
