@@ -1,1 +1,1 @@
-# Skin Lesion Analysis with Machine Learning
+# Skin Lesion Analysis with Computer Vision
