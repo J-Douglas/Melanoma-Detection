@@ -46,6 +46,8 @@ df['image_id'] = df['image_id'].apply(append_ext)
 #     print(disease_class)
 #     os.rename(base_dir + elm,'../datasets/HAM/' + disease_class + '/' + elm)
 
+### Custom Model
+
 model = Sequential()
 model.add(Conv2D(8,(11, 11), activation='relu', input_shape=(600,450,3)))
 model.add(MaxPooling2D((2, 2)))
@@ -62,6 +64,8 @@ model.add(Conv2D(8, (3, 3), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 model.add(Flatten())
 model.add(Dense(7, activation='softmax'))
+
+### Pre-trained Model w/ Transfer Learning
 
 model.compile(
   optimizer='adam', 
