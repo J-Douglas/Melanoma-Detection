@@ -3,6 +3,17 @@ import keras
 import pandas as pd
 import numpy as np
 import os
+from keras.applications
+model = tf.keras.applications.ResNet51(include_top=False,weights='imagenet')
+
+# transfer learning
+for i in model.layers:
+  i.trainable = False
+
+global_avg = tf.keras.layers.GlobalAveragePooling2D()(model.output)
+drop_out = tf.keras.layers.Dropout(0.4)(global_avg)
+out = tf.keras.layers.Dense(2,activation='sigmoid')(drop_out)
+resnet = tf.keras.Model(inputs=[model.input],outputs=[out]) import ResNet50
 from keras.models import Sequential
 from keras.layers import *
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -48,24 +59,36 @@ df['image_id'] = df['image_id'].apply(append_ext)
 
 ### Custom Model
 
-model = Sequential()
-model.add(Conv2D(8,(11, 11), activation='relu', input_shape=(600,450,3)))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(16,(7, 7), activation='relu'))
-model.add(Conv2D(16,(7, 7), activation='relu'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(32, (5, 5), activation='relu'))
-model.add(Conv2D(32, (5, 5), activation='relu'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(16, (5, 5), activation='relu'))
-model.add(Conv2D(16, (3, 3), activation='relu'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Conv2D(8, (3, 3), activation='relu'))
-model.add(MaxPooling2D((2, 2)))
-model.add(Flatten())
-model.add(Dense(7, activation='softmax'))
+# model = Sequential()
+# model.add(Conv2D(8,(11, 11), activation='relu', input_shape=(600,450,3)))
+# model.add(MaxPooling2D((2, 2)))
+# model.add(Conv2D(16,(7, 7), activation='relu'))
+# model.add(Conv2D(16,(7, 7), activation='relu'))
+# model.add(MaxPooling2D((2, 2)))
+# model.add(Conv2D(32, (5, 5), activation='relu'))
+# model.add(Conv2D(32, (5, 5), activation='relu'))
+# model.add(MaxPooling2D((2, 2)))
+# model.add(Conv2D(16, (5, 5), activation='relu'))
+# model.add(Conv2D(16, (3, 3), activation='relu'))
+# model.add(MaxPooling2D((2, 2)))
+# model.add(Conv2D(8, (3, 3), activation='relu'))
+# model.add(MaxPooling2D((2, 2)))
+# model.add(Flatten())
+# model.add(Dense(7, activation='softmax'))
 
 ### Pre-trained Model w/ Transfer Learning
+
+model = tf.keras.applications.ResNet51(include_top=False,weights='imagenet')
+
+# transfer learning
+for i in model.layers:
+  i.trainable = False
+
+global_avg = tf.keras.layers.GlobalAveragePooling2D()(model.output)
+drop_out = tf.keras.layers.Dropout(0.4)(global_avg)
+out = tf.keras.layers.Dense(7,activation='sigmoid')(drop_out)
+resnet = tf.keras.Model(inputs=[model.input],outputs=[out])
+
 
 model.compile(
   optimizer='adam', 
