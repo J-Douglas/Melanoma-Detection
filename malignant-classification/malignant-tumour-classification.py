@@ -19,6 +19,24 @@ def append_ext(fn):
 df_train['image_name'] = df_train['image_name'].apply(append_ext)
 df_test['image_name'] = df_test['image_name'].apply(append_ext)
 
+### Organizing ISIC 2020 Dataset
+
+# base_dir = '../datasets/ISIC 2020/'
+
+# for elm in df_train['image_name']:
+#     target = df_train[df_train['image_name']==elm]['benign_malignant'].iloc[0]
+#     print(base_dir)
+#     print(elm)
+#     print(target)
+#     os.rename(base_dir + 'train/' + elm,'../datasets/ISIC 2020/' + target + '/' + elm)
+
+# for elm in df_test['image_name']:
+#     target = df_test[df_test['image_name']==elm]['benign_malignant'].iloc[0]
+#     print(base_dir)
+#     print(elm)
+#     print(target)
+#     os.rename(base_dir + 'test/' + elm,'../datasets/ISIC 2020/' + target + '/' + elm)
+
 ### Image Generators (train and testing data)
 
 train_datagen = ImageDataGenerator(
