@@ -63,26 +63,26 @@ test_datagen = ImageDataGenerator(
     vertical_flip=True,
     rescale=1./255)
 
-# train_generator = train_datagen.flow_from_directory(
-#         batch_size=batch_size,
-# 		directory='../datasets/HAM/train',
-#         target_size=(600, 450), 
-#         classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
-#         class_mode='categorical')
+train_generator = train_datagen.flow_from_directory(
+        batch_size=batch_size,
+		directory='../datasets/HAM/train',
+        target_size=(600, 450), 
+        classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
+        class_mode='categorical')
 
-# validation_generator = validation_datagen.flow_from_directory(
-#         batch_size=batch_size,
-#         directory='../datasets/HAM/validation',
-#         target_size=(600, 450), 
-#         classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
-#         class_mode='categorical')
+validation_generator = validation_datagen.flow_from_directory(
+        batch_size=batch_size,
+        directory='../datasets/HAM/validation',
+        target_size=(600, 450), 
+        classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
+        class_mode='categorical')
 
-# test_generator = test_datagen.flow_from_directory(
-# 		batch_size=batch_size,
-#         directory='../datasets/HAM/test',
-#         target_size=(600, 450), 
-#         classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
-#         class_mode='categorical')
+test_generator = test_datagen.flow_from_directory(
+		batch_size=batch_size,
+        directory='../datasets/HAM/test',
+        target_size=(600, 450), 
+        classes = ['akiec','bcc','bkl','df','mel','nv','vasc'],
+        class_mode='categorical')
 
 ### Custom Model
 
@@ -115,10 +115,12 @@ resnet = tf.keras.Model(inputs=[model.input],outputs=[out])
 
 resnet.compile(optimizer=tf.keras.optimizers.Adam(),loss="binary_crossentropy",metrics=["accuracy"])
 
+epochs = 10
+
 history = nasnet.fit_generator(
-    # train_data_gen,
-    # epochs=epochs,
-    validation_data=val_data_gen
+    train_generator,
+    epochs=epochs,
+    validation_data=validation_generator
 )
 
 
