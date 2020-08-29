@@ -102,7 +102,7 @@ test_generator = test_datagen.flow_from_directory(
 
 ### Pre-trained Model w/ Transfer Learning
 
-model = tf.keras.applications.ResNet51(include_top=False,weights='imagenet')
+model = tf.keras.applications.ResNet50(include_top=False,weights='imagenet')
 
 # transfer learning
 for i in model.layers:
@@ -117,7 +117,7 @@ resnet.compile(optimizer=tf.keras.optimizers.Adam(),loss="binary_crossentropy",m
 
 epochs = 10
 
-history = nasnet.fit_generator(
+history = resnet.fit_generator(
     train_generator,
     epochs=epochs,
     validation_data=validation_generator
